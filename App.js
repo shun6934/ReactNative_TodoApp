@@ -6,9 +6,16 @@
  * @flow
  */
 
+// モジュールをimport
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native';
 
+// Platformの設定(ios・android)
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
   android:
@@ -16,8 +23,9 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-type Props = {};
-export default class App extends Component<Props> {
+// Componentの構築(部品)
+// type Props = {};
+export default class App extends Component</* Props */> {
   render() {
     return (
       <View style={styles.container}>
@@ -29,6 +37,7 @@ export default class App extends Component<Props> {
   }
 }
 
+// StyleSheetの設定(UI)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
