@@ -1,10 +1,11 @@
+// TextViewComponentの構築
 import React, {Component} from 'react';
 import {
     View,
     Text,
     TextInput,
     TouchableOpacity,
-    StyleSheet
+    StyleSheet,
 } from 'react-native'
 
 const styles = StyleSheet.create({
@@ -33,14 +34,32 @@ const styles = StyleSheet.create({
 });
 
 export default class TodoInput extends Component {
+    // 初期化
+    constructor(props) {
+        super(props);
+        this.ref = {};
+    }
+
+    // onPressメソッド
+    _onPress = () => {
+        this.props.onPress(this.ref._lastNativeText);
+        this.ref.setNativeProps({ text: '' });
+    }
+    // 画面構築
     render() {
         return(
             <View style={styles.container}>
-                <TextInput style={styles.textInput}></TextInput>
-                <TouchableOpacity style={styles.button}>
+                <TextInput
+                    style={styles.textInput}
+                    ref={(ref) => { this.ref = ref; }}
+                />
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={this._onPress}
+                >
                     <Text style={styles.buttonText}>追加</Text>
                 </TouchableOpacity>
             </View>
-        )
+        );
     }
 }
