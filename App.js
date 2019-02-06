@@ -12,8 +12,11 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  FlatList
 } from 'react-native';
+import TodoInput from './src/component/TodoInput';
+import TodoItem from './src/component/TodoItem';
 
 // Platformの設定(ios・android)
 const instructions = Platform.select({
@@ -25,13 +28,48 @@ const instructions = Platform.select({
 
 // Componentの構築(部品)
 // type Props = {};
-export default class App extends Component</* Props */> {
+export default class App extends Component<{/* Props */}> {
+  // 初期化
+  constructor(props) {
+    super(props);
+
+    // state設定
+    this.state = {
+      list: [],
+    };
+  }
+
+  // onPressメソッド作成
+  _onPress = text => {
+    const list = [].concat(this.state.list);
+
+    list.push({
+      key: Date.now(),
+      text: text,
+      done: false,
+    });
+
+    // state更新(setState)
+    this.setState({
+      list: list
+    })
+  };
+
+  // 画面構築
   render() {
+    const { list } = this.state;
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+        <View style={styles.main}>
+          <TodoInput onPress={this._onPress}/>
+          <View style={styles.todoListContainer}>
+            <FlatList
+              style={styles.todoList}
+              data={list}
+              renderItem={({ item }) => <TodoItem {...item} /> }
+            />
+          </View>
+        </View>
       </View>
     );
   }
@@ -41,18 +79,21 @@ export default class App extends Component</* Props */> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#F5FCFF',
+    paddingTop: 40,
+    alignItems: 'center',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  main: {
+    flex: 1,
+    maxWidth: 400,
+    alignItems: 'center',
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  todoListContainer: {
+    flexDirection: 'row',
+    flex: 1,
   },
+  todoList: {
+    paddingLeft: 10,
+    paddingRight: 10,
+  }
 });
