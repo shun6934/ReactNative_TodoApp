@@ -37,6 +37,8 @@ export default class TodoInput extends Component {
     // 初期化
     constructor(props) {
         super(props);
+
+        // ref: Componentsの様々な情報
         this.ref = {};
     }
 
@@ -47,6 +49,8 @@ export default class TodoInput extends Component {
     }
     // 画面構築
     render() {
+        // propsの受け取り
+        // const { onPress } = this.props
         return(
             <View style={styles.container}>
                 <TextInput
