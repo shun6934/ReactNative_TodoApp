@@ -8,15 +8,35 @@
   },
   "dependencies": {
     "react": "16.6.3",
-    "react-native": "0.57.8"
+    "react-native": "^0.58.4"
   },
   "devDependencies": {
     "babel-jest": "23.6.0",
+    "eslint": "^5.14.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.12.4",
     "jest": "23.6.0",
     "metro-react-native-babel-preset": "0.51.1",
     "react-test-renderer": "16.6.3"
   },
   "jest": {
     "preset": "react-native"
-  }
+  },
+  "description": "## What - Todoアプリ",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shun6934/ReactNative_TodoApp.git"
+  },
+  "keywords": [
+    "Todo"
+  ],
+  "author": "shun6934",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shun6934/ReactNative_TodoApp/issues"
+  },
+  "homepage": "https://github.com/shun6934/ReactNative_TodoApp#readme"
 }
