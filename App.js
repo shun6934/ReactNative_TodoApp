@@ -9,22 +9,17 @@
 // import module from library
 import React, { Component } from 'react';
 import {
-  Platform,
-  StyleSheet,
-  View,
-  FlatList,
+  Platform, StyleSheet, View, FlatList,
 } from 'react-native';
 import TodoInput from './src/component/TodoInput';
 import TodoItem from './src/component/TodoItem';
 
 // Platformの設定(ios・android)
 Platform.select({
-  ios:
-    'Press Cmd+R to reload,\n'
-    + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n'
-    + 'Shake or press menu button for dev menu',
+  ios: 'Press Cmd+R to reload,\n'
+   + 'Cmd+D or shake for dev menu',
+  android: 'Double tap R on your keyboard to reload,\n'
+   + 'Shake or press menu button for dev menu',
 });
 
 // StyleSheetの設定(UI)
@@ -62,7 +57,7 @@ export default class App extends Component {
     };
   }
 
-  // onPressメソッド作成
+  // onPressメソッド
   onPress = (text) => {
     const todo = [];
     todo.push({
@@ -76,6 +71,26 @@ export default class App extends Component {
     }));
   };
 
+  // deleteメソッド
+  delete = index => () => {
+    let { list } = this.state;
+    if (index === 0) {
+      list = [];
+    } else {
+      list.splice(index, 1);
+    }
+
+    this.setState({ list });
+  };
+
+  // doneメソッド
+  done = index => () => {
+    const { list } = this.state;
+    list[index].done = !list[index].done;
+
+    this.setState({ list });
+  };
+
   // 画面構築
   render() {
     const { list } = this.state;
@@ -87,7 +102,9 @@ export default class App extends Component {
             <FlatList
               style={styles.todoList}
               data={list}
-              renderItem={({ item }) => <TodoItem {...item} />}
+              renderItem={({ item, index }) => (
+                <TodoItem onDone={this.done(index)} onDelete={this.delete(index)} {...item} />
+              )}
             />
           </View>
         </View>
