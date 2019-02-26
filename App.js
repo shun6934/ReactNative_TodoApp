@@ -6,74 +6,21 @@
  * @flow
  */
 
-// モジュールをimport
-import React, {Component} from 'react';
+// import module from library
+import React, { Component } from 'react';
 import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  FlatList
+  Platform, StyleSheet, View, FlatList,
 } from 'react-native';
 import TodoInput from './src/component/TodoInput';
 import TodoItem from './src/component/TodoItem';
 
 // Platformの設定(ios・android)
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
+Platform.select({
+  ios: 'Press Cmd+R to reload,\n'
+   + 'Cmd+D or shake for dev menu',
+  android: 'Double tap R on your keyboard to reload,\n'
+   + 'Shake or press menu button for dev menu',
 });
-
-// Componentの構築(部品)
-// type Props = {};
-export default class App extends Component<{/* Props */}> {
-  // 初期化
-  constructor(props) {
-    super(props);
-
-    // state設定
-    this.state = {
-      list: [],
-    };
-  }
-
-  // onPressメソッド作成
-  _onPress = text => {
-    const list = [].concat(this.state.list);
-
-    list.push({
-      key: Date.now(),
-      text: text,
-      done: false,
-    });
-
-    // state更新(setState)
-    this.setState({
-      list: list
-    })
-  };
-
-  // 画面構築
-  render() {
-    const { list } = this.state;
-    return (
-      <View style={styles.container}>
-        <View style={styles.main}>
-          <TodoInput onPress={this._onPress}/>
-          <View style={styles.todoListContainer}>
-            <FlatList
-              style={styles.todoList}
-              data={list}
-              renderItem={({ item }) => <TodoItem {...item} /> }
-            />
-          </View>
-        </View>
-      </View>
-    );
-  }
-}
 
 // StyleSheetの設定(UI)
 const styles = StyleSheet.create({
@@ -93,7 +40,75 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   todoList: {
-    paddingLeft: 10,
-    paddingRight: 10,
-  }
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
 });
+
+// Componentの構築(部品)
+export default class App extends Component {
+  // 初期化
+  constructor(props) {
+    super(props);
+
+    // state設定
+    this.state = {
+      list: [],
+    };
+  }
+
+  // onPressメソッド
+  onPress = (text) => {
+    const todo = [];
+    todo.push({
+      key: Date.now(),
+      text,
+      done: false,
+    });
+
+    this.setState(prevState => ({
+      list: prevState.list.concat(todo),
+    }));
+  };
+
+  // deleteメソッド
+  delete = index => () => {
+    let { list } = this.state;
+    if (index === 0) {
+      list = [];
+    } else {
+      list.splice(index, 1);
+    }
+
+    this.setState({ list });
+  };
+
+  // doneメソッド
+  done = index => () => {
+    const { list } = this.state;
+    list[index].done = !list[index].done;
+
+    this.setState({ list });
+  };
+
+  // 画面構築
+  render() {
+    const { list } = this.state;
+    return (
+      <View style={styles.container}>
+        <View style={styles.main}>
+          <TodoInput onPress={this.onPress} />
+          <View style={styles.todoListContainer}>
+            <FlatList
+              style={styles.todoList}
+              data={list}
+              renderItem={({ item, index }) => (
+                <TodoItem onDone={this.done(index)} onDelete={this.delete(index)} {...item} />
+              )}
+            />
+          </View>
+        </View>
+      </View>
+    );
+  }
+}
